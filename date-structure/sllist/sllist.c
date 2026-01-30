@@ -342,5 +342,161 @@ bool ispalindrome2(sllnode *head)
 }
 bool ispalindrome3(sllnode *head)
 {
+    if(head==NULL || head->next==NULL)
+    {
+        return true;
+    }
+    sllnode *fast=head;
+    sllnode *slow=head;
+    while(fast!=NULL &&fast->next!=NULL)
+    {
+        fast=fast->next->next;
+        slow=slow->next;
+    }
+    if(fast !=NULL)
+    {
+        slow=slow->next;
+    }
     
+    slow=reverse(slow);
+    sllnode *second=slow;
+    bool res=true;
+    while(slow!=NULL&&head!=NULL)
+    {
+        if(slow->a!=head->a)
+        {
+            res=false;
+            break;
+        }
+        slow=slow->next;
+        head=head->next;
+    }
+    second=reverse(second);
+    return res;
+}
+
+//实现链表排序（荷兰国旗问题，要稳定
+//1.笔试的时候考虑快，不考虑空间，直接一个数组partition
+//2.可以用边界指针做
+sllnode * listpartition1(sllnode *head,int pivot)
+{
+    //统计链表长度
+    int count=0;
+    sllnode *cur=head;
+    while(cur!=NULL)
+    {
+        count++;
+        cur=cur->next;
+    }
+    sllnode **arr=malloc(count * sizeof(sllnode*));
+    cur=head;
+    for(int i=0;i<count;i++)
+    {
+        arr[i]=cur;
+        cur=cur->next;
+        arr[i]->next=NULL;
+    }
+    int less=-1;
+    int more= count;
+    int index=0;
+    while(index<more)
+    {
+        if(arr[index]->a <pivot)
+        {
+            less++;
+            sllnode *tmp=arr[less];
+            arr[less]=arr[index];
+            arr[index]=tmp;
+            index++;
+        }
+        else if(arr[index]->a >pivot)
+        {
+            more--;
+            sllnode*tmp =arr[more];
+            arr[more]=arr[index];
+            arr[index]=tmp;
+        }
+        else 
+        {
+            index++;
+        }
+    }
+    for(int i=0;i<count-1;i++)
+    {
+        arr[i]->next=arr[i+1];
+    }
+    head=arr[0];
+    free(arr);
+    return head;
+}
+sllnode * listpartition2(sllnode *head,int pivot)//pivot支点
+{
+    sllnode *lessleft=NULL;
+    sllnode *lessright=NULL;
+    sllnode *equalleft=NULL;
+    sllnode *equalright=NULL;
+    sllnode *moreleft=NULL;
+    sllnode *moreright=NULL;
+    sllnode *temp=NULL;
+
+    //every node distributed to three lists
+    while(head!=NULL)
+    {
+        temp=head->next;
+        head->next=NULL;
+
+        if(head->a <pivot)
+        {
+            if(lessleft==NULL)
+            {
+                lessleft=head;
+                lessright=head;
+            }
+            else
+            {
+                lessright->next=head;
+                lessright=head;//更新边界
+            }
+        }
+        else if(head->a ==pivot)
+        {
+            if(equalleft==NULL)
+            {
+                equalleft=head;
+                equalright=head;
+            }
+            else
+            {
+                equalright->next=head;
+                equalright=head;
+            }
+        }
+        else
+        {
+            if(moreleft==NULL)
+            {
+                moreleft=head;
+                moreright=head;
+            }
+            else
+            {
+                moreright->next=head;
+                moreright=head;
+            }
+        }
+        head=temp;
+    }
+    if(lessright!=NULL)
+    {
+        lessright->next=equalleft;
+        equalright= equalright==NULL ? lessleft: equalright;//判断谁去连接大于区域
+    }
+    
+    //不管上面的if跑了没有我们都拿equealright去连接
+    if(equalright != NULL)
+    {
+        equalright->next =moreleft;
+    }
+    return lessleft!=NULL ? lessleft :(equalleft !=NULL ? equalleft :moreleft);
+
 }

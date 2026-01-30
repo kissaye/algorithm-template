@@ -25,7 +25,15 @@ sllnode*reverse_recursive(sllnode* curr,sllnode*prev);
 //环相关
 bool has_cycle(sllnode* head);
 sllnode* detect_cycle(sllnode*head);
+
 //判断是否回文
 bool ispalindrome1(sllnode *head);
 bool ispalindrome2(sllnode *head);
+bool ispalindrome3(sllnode *head);
+
+//链表排序（荷兰国旗
+sllnode * listpartition1(sllnode *head,int pivot);
+sllnode * listpartition2(sllnode *head,int pivot);
+
+
 #endif // SLLIST_H
