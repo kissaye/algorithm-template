@@ -174,8 +174,10 @@ sllnode* delete_value(sllnode* head,int val)
     return head;
 }
 
-//判断环快慢指针法
-bool has_cycle(sllnode* head)
+//判断环是否有环
+//1.使用额外空间哈希表
+//2.快慢指针法
+bool has_cycle2(sllnode* head)
 {
     if(head==NULL||head->next==NULL)
     {
@@ -558,4 +560,125 @@ Node *copylistWithRand2(Node *head)
         cur=next;
     }
     return res;
+}
+
+//两个单链表相交问题
+/*给定两个有环也可能无环的链表，若相交，返回第一个相交节点，不相交返回NULL*/
+//1先判断两个有没有环，用has_cycle判断 2.根据两个无环，两个有环，判断类型，不可能一个有环一个没环
+sllnode *getIntersectSllnode (sllnode *head1,sllnode *head2)
+{
+    if(head1==NULL ||head2==NULL)
+    {
+        return NULL;
+    }
+    sllnode *loop1=detect_cycle(head1);
+    sllnode *loop2=detect_cycle(head2);
+    if(loop1==NULL &&loop2==NULL)
+    {
+        return noloop(head1,head2);
+    }
+    if(loop1!=NULL && loop2!=NULL)
+    {
+        return bothloop(head1,loop1,head2,loop2);
+    }
+    return NULL;
+
+}
+
+
+sllnode *noloop(sllnode *head1,sllnode *head2)
+{
+    if(head1==NULL ||head2==NULL)
+    {
+        return NULL;
+    }
+    int n=0;
+    sllnode *cur1=head1;
+    sllnode *cur2=head2;
+    while(cur1->next!=NULL)
+    {
+        n++;
+        cur1=cur1->next;
+    }
+    while(cur2->next!=NULL)
+    {
+        n--;
+        cur2=cur2->next;
+    }
+    //判断是否相等最后一个节点
+    if(cur1!=cur2)
+    return NULL;
+
+    //n为两个链表的长度的差值
+    cur1= n>0 ? head1 :head2;
+    cur2= cur1==head1 ? head2 :head1 ;
+    n=abs(n);
+    while(n>0)
+    {
+        cur1=cur1->next;
+        n--;
+    }
+    while(cur1!=cur2)
+    {
+        cur1=cur1->next;
+        cur2=cur2->next;
+    }
+    return cur1;
+}
+//两个都有环时1不相交，2相交但是在环之前相交，转化为noloop求解3相交，两个loop不相同且在环上
+sllnode *bothloop(sllnode *head1,sllnode *loop1,sllnode *head2,sllnode* loop2)
+{
+    sllnode *cur1=NULL;
+    sllnode *cur2=NULL;
+    if(loop1==loop2)//第二种情况
+    {
+        
+        /*cur1=loop1->next;
+        loop1->next=NULL;
+        cur2=noloop(head1,head2);
+        loop1->next=cur1;
+        return cur2;*///这样可能会断链
+        cur1=head1;
+        cur2=head2;
+        int n=0;
+        while(cur1!=loop1)
+        {
+            n++;
+            cur1=cur1->next; 
+        }
+        while(cur2!=loop2)
+        {
+            n--;
+            cur2=cur2->next;
+        }
+
+        //n为两个链表的长度的差值
+        cur1= n>0 ? head1 :head2;
+        cur2= cur1==head1 ? head2 :head1 ;
+        n=abs(n);
+        while(n!=0)
+        {
+            cur1=cur1->next;
+            n--;
+        }
+        while(cur1!=cur2)
+        {
+            cur1=cur1->next;
+            cur2=cur2->next;
+        }
+        return cur1;
+    }
+    else
+    {
+        cur1=loop1->next;
+        while(cur1!=loop1)
+        {
+            if(cur1==loop2)
+            {
+                return loop1;//第三种情况，返回loop2也行
+            }
+            cur1=cur1->next;
+        }
+        return NULL;//第一种
+    }
 }

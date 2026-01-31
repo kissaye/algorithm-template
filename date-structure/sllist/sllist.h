@@ -23,7 +23,7 @@ sllnode*reverse(sllnode* head);
 sllnode*reverse_recursive(sllnode* curr,sllnode*prev);
 
 //环相关
-bool has_cycle(sllnode* head);
+bool has_cycle2(sllnode* head);
 sllnode* detect_cycle(sllnode*head);
 
 //判断是否回文
@@ -42,4 +42,8 @@ typedef struct Node
     struct Node *rand;
 }Node;
 Node* copylistWithRand2(Node *head);
+
+sllnode *getIntersectSllnode (sllnode *head1,sllnode *head2);
+sllnode *noloop(sllnode *head1,sllnode *head2);
+sllnode *bothloop(sllnode *head1,sllnode *loop1,sllnode *head2,sllnode* loop2);
 #endif // SLLIST_H
