@@ -500,3 +500,62 @@ sllnode * listpartition2(sllnode *head,int pivot)//pivot支点
     return lessleft!=NULL ? lessleft :(equalleft !=NULL ? equalleft :moreleft);
 
 }
+
+
+//复制含有随机指针节点的链表，
+/*一种特殊的单链表节点类描述如下
+class Node{
+int value;
+Node next;
+Node rand;
+}
+rand指针是单链表节点结构中新增的指针，rand可能指向链表中的任意一个节点，也可能指向NULL。
+*/
+//1.一种用哈希表，空间复杂度为o（n）
+//2.把新节点插入到旧节点中，时间复杂度为o（n），空间复杂度为o（1）
+Node *copylistWithRand2(Node *head)
+{
+    if(head==NULL)
+    {
+        return NULL;
+    }
+    Node *cur=head;
+    Node *next=NULL;
+
+    //插入复制节点
+    while(cur!=NULL)
+    {
+        next=cur->next;
+        Node *copy=malloc(sizeof(Node));
+        copy->value=cur->value;
+
+        cur->next=copy;
+        copy->next=next;
+        cur=next;
+
+    }
+    //设置rand
+    cur=head;
+    while(cur!=NULL)
+    {
+        if(cur->rand!=NULL)
+        cur->next->rand=cur->rand->next;
+        else
+        cur->next->rand=NULL;
+        
+        cur=cur->next->next;
+    }
+    //拆分链表
+    cur=head;
+    Node *res=head->next;
+    Node *copycur;
+    while(cur!=NULL)
+    {
+        next=cur->next->next;
+        copycur=cur->next;
+        cur->next=next;
+        copycur=(next!=NULL) ? next->next :NULL;
+        cur=next;
+    }
+    return res;
+}

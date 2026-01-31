@@ -35,5 +35,11 @@ bool ispalindrome3(sllnode *head);
 sllnode * listpartition1(sllnode *head,int pivot);
 sllnode * listpartition2(sllnode *head,int pivot);
 
-
+typedef struct Node
+{
+    int value;
+    struct Node *next;
+    struct Node *rand;
+}Node;
+Node* copylistWithRand2(Node *head);
 #endif // SLLIST_H
