@@ -85,13 +85,13 @@ void mergesort(int arr[],int left,int right)
 }
 void merge(int arr[],int left,int mid,int right)
 {
-    int help=new int[right-left+1];
+    int* help=new int[right-left+1];
     int i=0;
     int p1=left;
     int p2=mid+1;
     while(p1<=mid && p2<=right)
     {
-        help[i++]=arr[p1]<=arr[p2]?arrr[p1++]:arr[p2++];
+        help[i++]=arr[p1]<=arr[p2]?arr[p1++]:arr[p2++];
     }
     while(p1<=mid)
     {
@@ -114,7 +114,7 @@ void quicksort(int arr[],int left,int right)
     if(left<right)
     {
         swap(arr[left+rand()%(right-left+1)],arr[right]);//随机选取基准值
-        int[] p=partition(arr,left,right);
+        int* p=partition(arr,left,right);
         quicksort(arr,left,p[0]);//排序小于区域
         quicksort(arr,p[1]+1,right);//排序大于区域
     }
