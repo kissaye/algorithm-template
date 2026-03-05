@@ -1,7 +1,7 @@
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
 
-//bubble sort function
+//bubble sort function 冒泡排序
 void bubbleSort(int arr[], int size) 
 {
     bool swapped=false;
@@ -27,7 +27,7 @@ void bubbleSort(int arr[], int size)
 }
 
 
-//insertion sort function
+//insertion sort function插入排序
 void insertionsort(int arr[],int size)
 {
     //外层循环，遍历无序元素
@@ -50,7 +50,7 @@ void insertionsort(int arr[],int size)
 //趋于有序时，插入排序优于冒泡排序，因为插入排序减少了不必要的比较和交换操作.
 
 
-//selection sort function 
+//selection sort function 选择排序
 //选择的是位置，而不是数据
 void selectionsort(int arr[],int size)
 {
@@ -71,7 +71,7 @@ void selectionsort(int arr[],int size)
     }
 }
 
-//merge sort function
+//merge sort function归并排序
 void mergesort(int arr[],int left,int right)
 {
     if(left>=right)
@@ -108,15 +108,15 @@ void merge(int arr[],int left,int mid,int right)
 
 }
 
-//quick sort function
+//quick sort function快速排序
 void quicksort(int arr[],int left,int right)    
 {
     if(left<right)
     {
         swap(arr[left+rand()%(right-left+1)],arr[right]);//随机选取基准值
-        int* p=partition(arr,left,right);
-        quicksort(arr,left,p[0]);//排序小于区域
-        quicksort(arr,p[1]+1,right);//排序大于区域
+        pair<int,int> p=partition(arr,left,right);
+        quicksort(arr,left,p.first);//排序小于区域
+        quicksort(arr,p.second+1,right);//排序大于区域
     }
 }
 pair<int,int> partition (int arr[],int left,int right)
@@ -142,4 +142,67 @@ pair<int,int> partition (int arr[],int left,int right)
     //把基准值放到等于区域内，即最后一个值和大于区域第一个数交换
     //此时less和more都是小于和大于区域的开区间边界
     return make_pair(less,more);
+}
+//荷兰国旗问题
+
+
+
+
+//堆排序
+//1.插入大根堆的，往上过程叫做heapinsert
+//某个数处于index的位置，往上继续移动
+void heapInsert(int arr[],int index)
+{
+    while(arr[index]>arr[(index-1)/2])
+    {
+        swap(arr[index],(arr[(index-1)/2]));
+        index=(index-1)/2;
+    }
+}
+//2.某个数处于index的位置，是否需要往下移动，从一个位置往下的过程叫做heapify
+void heapify(int arr[],int index,int heapsize)
+{
+    //heapsize是当前数组的长度
+    int left=index*2+1;//左孩子下表
+    while(left<heapsize)//下方还有孩子的时候
+    {
+        //两个孩子谁的值大，把下标给largest
+        int largest=left+1 < heapsize && arr[left+1]>arr[left] ? left+1 : left;
+        //父和孩子谁的值大，把下标给largest
+        largest=arr[largest]>arr[index]?largest:index;
+        if(largest==index)
+        {
+            break;
+        }
+        swap(arr[largest],arr[index]);
+        index=largest;
+        left=index*2+1;
+    }
+}
+
+//3.删除大根堆头部父节点
+//最后一个数和父节点交换，heapsize-1，此时最后一位已经无效，对现在的父节点完成heapify操作
+
+//4.堆替换
+//某个位置数与外来数字做替换，二者先比较，视情况然后做heapify或者heapinsert过程
+
+
+//堆排序时间复杂度O(NlogN) 空间复杂度O（1）
+void heapSort(int arr[],int size)//size是数组的长度
+{
+    if(arr==NULL)
+    {
+        return;
+    }
+    for(int i=0;i<size;i++)//O(N),生成了一个大根堆
+    {
+        heapInsert(arr,i);//O(logN)
+    }
+    int heapsize=size;
+    swap(arr[0],--heapsize);//将最大值放在最后面，接下来就是对数组的真正排序
+    while(heapsize>0)//O(N)
+    {
+        heapify(arr,0,heapsize);//O(logN)
+        swap(arr[0],--heapsize);//O(1)
+    }
 }
