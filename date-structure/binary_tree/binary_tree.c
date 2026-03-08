@@ -21,10 +21,10 @@ treenode* Binary_treenodeInsert(treenode* root,int val)
 {
     if(root==NULL)
     {
-        return Binary_treenodeCreate(val);
+        return Binary_treenodeCreate(val);//如果树为空，直接创建新节点作为根
     }
-    treenode* queue[1000];
-    int front =0,rear=0;
+    treenode* queue[1000];//利用数组模拟队列
+    int front =0,rear=0;//队列的前后指针
     queue[rear++]=root;
     while(front<rear)
     {
