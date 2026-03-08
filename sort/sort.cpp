@@ -206,3 +206,34 @@ void heapSort(int arr[],int size)//size是数组的长度
         swap(arr[0],--heapsize);//O(1)
     }
 }
+
+//堆排序拓展
+/*一个几乎有序的序列，几乎有序是指，如果吧数组排好顺序的话，每个元素移动的距离可以不超过k，并且k对于数组来说较小，请选择一个合适的算法对这个数据进行排序*/
+/*1.设k=6，找一个小根堆，节点数为7
+2.遍历前7个数，放入小根堆
+3、将小根堆的头节点放入数组0位
+4、插入数组第七个，heapify后，执行3，放入1号位，重复执行*/
+void sortArrDistanceLessK(int arr[],int k,int size)
+{
+    //默认情况为小根堆
+    priority_queue<int,vector<int>,greater<int>> heap;
+    int index=0;
+    for(;index<=min(size,k);index++)
+    {
+        heap.push(arr[index]);
+    }
+    int i=0;
+    for(;index<size;i++,index++)
+    {
+        heap.push(arr[index]);
+        arr[i]=heap.top();
+        heap.pop();
+    }
+    while(!heap.empty())
+    {
+        arr[i++]=heap.top();
+        heap.pop();
+    }
+
+}
+//小根堆每次弹出时复杂度为logk，遍历每个数就是O（N），总O（N*logK+1）约等于O（N）

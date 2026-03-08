@@ -51,3 +51,25 @@ treenode* Binary_treenodeInsert(treenode* root,int val)
     }
     return root;
 }
+
+//递归序中序遍历
+void inOrderRecur(treenode* head)
+{
+    if(head==NULL)
+    {
+        return;
+    }
+    inOrderRecur(head->left);
+    printf(head->val);
+    inOrderRecur(head->right);
+
+}
+//完成遍历不用递归
+void preOrderUnRecur(treenode* head)
+{
+    printf(head->val);
+    if(head!=NULL)
+    {
+        stack *stacknode=
+    }
+}
