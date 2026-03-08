@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build cpp with MSVC",
+            "type": "shell",
+            "command": "cl.exe",
+            "args": [
+                "/EHsc",      // 启用 C++ 异常处理
+                "${file}",    // 当前打开文件
+                "/Fe:${fileDirname}\\${fileBasenameNoExtension}.exe" // 输出 exe
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ],
+    "configurations": [
+        
+
+    ]
+}
