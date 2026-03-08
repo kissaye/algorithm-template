@@ -1,5 +1,5 @@
 #include<cstdio>
-#include<cstdlib>
+#include<bits/stdc++.h>
 #include<stack>
 #include"binary_tree.h"
 using namespace std;
@@ -81,13 +81,16 @@ void preOrderUnRecur(treenode* head)
     }
     
     stack<treenode*> stk;
+    vector<int> result;
     stk.push(head);
     
     while(!stk.empty())
     {
         treenode* node=stk.top();
         stk.pop();
-        printf("%d ", node->val);
+        //printf("%d ", node->val);
+        result.push_back(node->val);
+
         
         if(node->right!=NULL)
         {
@@ -98,4 +101,50 @@ void preOrderUnRecur(treenode* head)
             stk.push(node->left);
         }
     }
+}
+
+//迭代法中序遍历
+void inOrderUnRecur(treenode* head)
+{
+    vector<int> result;
+    stack<treenode*> stk;
+    treenode* cur=head;
+    while(cur!=NULL || !stk.empty())
+    {
+        if(cur!=NULL)//指针用来访问节点，先访问最底层
+        {
+            stk.push(cur);//将访问到的节点压入栈
+            cur=cur->left;   //左
+        }
+        else//该子树到底了，开始处理数据
+        {
+            cur=stk.top();    //从栈里 弹出数据，就是要放进result数组
+            stk.pop();
+            result.push_back(cur->val);    //中
+            cur=cur->right;                //右
+        }
+    }
+    return;
+}
+
+//迭代法后序遍历
+void posOrderUnRecur(treenode* head)
+{
+    stack<treenode*> stk;
+    vector<int> result;
+    if(head==NULL)
+    {
+        return;
+    }
+    stk.push(head);
+    while(!stk.empty())
+    {
+        treenode* node=stk.top();
+        stk.pop();
+        result.push_back(node->val);
+        if(node->left) stk.push(node->left);
+        if(node->right) stk.push(node->right);  
+    }
+    reverse(result.begin(),result.end());
+    return;
 }
