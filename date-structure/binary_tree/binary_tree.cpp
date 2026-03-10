@@ -178,3 +178,140 @@ void LevelOrder(treenode* head)
     return;
 }
 
+//二叉树的翻转
+//递归(前序)
+treenode* inverTreePreRecur(treenode* head)
+{
+    if(head==NULL)
+    return head;
+    swap(head->left,head->right);
+    inverTreePreRecur(head->left);
+    inverTreePreRecur(head->right);
+    return head;
+
+}
+//递归中序。交换中间节点的两个子树后，第三次递归序要处理的是原来的右节点，也就是后来的左节点
+treenode* invertTreeInRecur(treenode* head)
+{
+    if(head==NULL)
+    {
+        return head;
+
+    }
+    invertTreeInRecur(head->left);
+    swap(head->left,head->right);
+    invertTreeInRecur(head->left);//注意这边是左
+    return head;
+}
+//迭代（前序）
+treenode* inyerTreeUnRecur(treenode* head)
+{
+    if(head==NULL)
+    return head;
+    stack<treenode*> stk;
+    stk.push(head);
+    while(!stk.empty())
+    {
+        treenode* node=stk.top();
+        stk.pop();
+        swap(node->left,node->right);
+        if(node->left) stk.push(node->left);
+        if(node->right) stk.push(node->right);
+    }
+    return head;
+}
+//层序遍历实现
+treenode* invertTreelevelOrder(treenode* head)
+{
+    queue<treenode*> que;
+    if(head!=NULL) que.push(head);
+    while(!que.empty())
+    {
+        int size=que.size();
+        for(int i=0;i<size;i++)
+        {
+            treenode* node=que.front();
+            que.pop();
+            swap(node->left,node->right);
+            if(node->left) que.push(node->left);
+            if(node->right) que.push(node->right);
+        }
+    }
+    return head;
+}
+
+
+
+
+
+//对称二叉树，给定一个二叉树，检查他是否是镜像对称的
+bool compare(treenode* left,treenode* right)
+{
+    if(left==NULL && right !=NULL)
+    {
+        return false;
+    }
+    else if(left!=NULL &&right ==NULL)
+    {
+        return false;
+    }
+    else if(left==NULL && right==NULL)
+    {
+        return true;
+    }
+    //排除了空节点，再排除数值不同的情况
+    else if(left->val!=right->val)
+    {
+        return false;
+    }
+    
+
+    //存在数据，且数据相同时，做下一层递归
+    bool outside=compare(left->left,right->right);
+    bool inside=compare(left->right,right->left);
+    bool isSame=outside &&inside;
+    return isSame;
+    //上面这段可以直接改为
+    /*else return compare(left->left,right->right)&&compare(left->right,right->left);*/
+}
+bool isSymmetric(treenode* head)
+{
+    if(head==NULL)
+    {
+        return true;
+    }
+    return compare(head->left,head->right);
+}
+
+//迭代法（队列与栈都ok，完全对等替换，与bfs不类似）
+bool isSymmetricUnRecur(treenode* head)
+{
+    if(head==NULL)
+    {
+        return true;
+    }
+    queue<treenode*> que;
+    que.push(head->left);
+    que.push(head->right);
+    while(!que.empty())
+    {
+        treenode* leftnode=que.front();
+        que.pop();
+        treenode* rightnode=que.front();
+        que.pop();
+        if(!leftnode &&!rightnode)//左右节点为空，对称
+        {
+            continue;
+        }
+        //左右节点一个为空或不等
+        if((!leftnode||!rightnode||(leftnode->val!=rightnode->val)))
+        {
+            return false;
+        }
+        que.push(leftnode->left);
+        que.push(rightnode->right);
+        que.push(leftnode->right);
+        que.push(rightnode->left);
+    }
+    return true;
+}
