@@ -148,3 +148,33 @@ void posOrderUnRecur(treenode* head)
     reverse(result.begin(),result.end());
     return;
 }
+
+
+//二叉树统一风格迭代法
+
+//二叉树的层序遍历，广度优先搜索bfs
+void LevelOrder(treenode* head)
+{
+    queue<treenode*> que;
+    if(head!=NULL)
+    {
+        que.push(head);
+    }
+    vector<vector<int>> result;
+    while(!que.empty())
+    {
+        int size=que.size();
+        vector<int> vec;
+        while(size--)
+        {
+            treenode* node=que.front();
+            que.pop();
+            vec.push_back(node->val);
+            if(node->left) que.push(node->left);
+            if(node->right) que.push(node->right);
+         }
+         result.push_back(vec);
+    }
+    return;
+}
+
