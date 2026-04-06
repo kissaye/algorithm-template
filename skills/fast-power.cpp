@@ -1,3 +1,4 @@
+const int mod=1e9+7;
 long long ksm(int a,int b)
 {
     long long t=a;//存储a的幂
