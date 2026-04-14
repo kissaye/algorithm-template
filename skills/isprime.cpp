@@ -23,7 +23,7 @@ void init()
     for(int i=2;i<=N;i++)
     {
         if(f[i])
-        continue;//如果被标记了就下一个
+        continue;//如果被标记了（是合数）就下一个
         a.push_back(i);
         for(int j=i;j<=N;j+=i)
         {

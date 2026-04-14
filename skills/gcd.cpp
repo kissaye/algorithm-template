@@ -1,6 +1,6 @@
 int gcd(int x,int y)//最大公约数 欧几里得算法 辗转相除法
 {
-    return y==0?x:gcd(x,x%y);
+    return y==0?x:gcd(y,x%y);
 }
 //cout<<__gcd(x,y);
 
