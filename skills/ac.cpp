@@ -42,7 +42,7 @@ int main ()
         int a,b;
         cin >> a >> b;
         //C(a,b)=a!*(b!)^-1*((a-b)!)^-1;
-        if (b > a) 
+        if (b > a) //若a<b,会访问负下标，特判
         {
         cout << 0 << '\n';
         continue;
