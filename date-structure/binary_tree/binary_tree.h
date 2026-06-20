@@ -3,9 +3,15 @@
 
 
 #include<stdbool.h>
+typedef struct 
+{
+    int num;
+    char name[10];
+}student;
 typedef struct TreeNode
 {
-    int val;
+    //int val;
+    student data;
     struct TreeNode* left;
     struct TreeNode* right;
 }treenode;

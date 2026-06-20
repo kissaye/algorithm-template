@@ -76,30 +76,20 @@ void inOrderRecur(treenode* head)
 void preOrderUnRecur(treenode* head)
 {
     if(head==NULL)
-    {
-        return;
-    }
-    
+    return;
     stack<treenode*> stk;
     vector<int> result;
     stk.push(head);
-    
     while(!stk.empty())
     {
         treenode* node=stk.top();
         stk.pop();
         //printf("%d ", node->val);
-        result.push_back(node->val);
-
-        
+        result.push_back(node->data);
         if(node->right!=NULL)
-        {
-            stk.push(node->right);
-        }
+        stk.push(node->right);
         if(node->left!=NULL)
-        {
-            stk.push(node->left);
-        }
+        stk.push(node->left);
     }
 }
 
@@ -157,9 +147,7 @@ void LevelOrder(treenode* head)
 {
     queue<treenode*> que;
     if(head!=NULL)
-    {
         que.push(head);
-    }
     vector<vector<int>> result;
     while(!que.empty())
     {
@@ -169,7 +157,7 @@ void LevelOrder(treenode* head)
         {
             treenode* node=que.front();
             que.pop();
-            vec.push_back(node->val);
+            vec.push_back(node->data);
             if(node->left) que.push(node->left);
             if(node->right) que.push(node->right);
          }
